@@ -1,5 +1,8 @@
 import paramiko
 
+usernamefile = 'username.txt'
+passwordfile = 'password.txt'
+
 def ssh_conn(ip,username,password):
     print('start connect %s...' % ip)
     try:
@@ -19,11 +22,17 @@ def ssh_crack(ip):
 
 def getPasswordDic():
     retDic = []
-    with open('username.txt') as usernameFile:
-        for username in usernameFile.readlines():
-            with open('password.txt') as passwordFile:
-                for passwd in passwordFile.readlines():
-                    retDic.append((username.strip(),passwd.strip()))
+    try:
+        with open(usernamefile,'r') as usernameFile:
+            for username in usernameFile.readlines():
+                with open(passwordfile,'r') as passwordFile:
+                    for passwd in passwordFile.readlines():
+                        retDic.append((username.strip(),passwd.strip()))
+    except:
+        print('username file or password file error.pls check.')
+        return []
     return retDic
 
 # ssh_conn('172.18.3.8','issor','issorgnnt')
+# getPasswordDic()
+# ssh_crack('192.168.1.1')

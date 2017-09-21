@@ -3,6 +3,7 @@ import re
 
 def getIPList(ipstr):
     ipList = []
+    # like 192.168.1.0/24
     if re.search(r'/',ipstr) is not None:
         try:
             ipy_ip = IPy.IP(ipstr)
@@ -11,14 +12,16 @@ def getIPList(ipstr):
         for x in ipy_ip:
             if x.strNormal() not in ipy_ip.net().strNormal() and x.strNormal() not in ipy_ip.broadcast().strNormal():
                 ipList.append(x.strNormal())
+    # like 192.168.1.1-100 or 192.168.1.1-192.168.3.200
     elif re.search(r'-',ipstr) is not None:
         sip = re.compile('(\d{1,3}).(\d{1,3}).(\d{1,3}).(\d{1,3})').findall(ipstr)
         start_ipaddr = str(sip[0][0])+'.'+str(sip[0][1])+'.'+str(sip[0][2])+'.'+str(sip[0][3])
         try:
+            #check input
             IPy.IP(start_ipaddr)
         except:
             return None
-        #xxx.xxx.xxx.aaa-bbb
+        # 192.168.1.1-100
         if len(sip) is 1:
             endnum = re.compile('-(\d+)').findall(ipstr)
             end_ipaddr = str(sip[0][0])+'.'+str(sip[0][1])+'.'+str(sip[0][2])+'.'+str(endnum[0])
@@ -30,7 +33,7 @@ def getIPList(ipstr):
                 if x==0 or x==255:
                     continue
                 ipList.append(str(sip[0][0])+'.'+str(sip[0][1])+'.'+str(sip[0][2])+'.'+str(x))
-        # xxx.xxx.xxx.xxx-xxx.xxx.xxx.xxx
+        # 192.168.1.1-192.168.3.200
         elif len(sip) is 2:
             end_ipaddr = str(sip[1][0])+'.'+str(sip[1][1])+'.'+str(sip[1][2])+'.'+str(sip[1][3])
             try:
