@@ -32,7 +32,3 @@ def getPasswordDic():
         print('username file or password file error.pls check.')
         return []
     return retDic
-
-# ssh_conn('172.18.3.8','issor','issorgnnt')
-# getPasswordDic()
-# ssh_crack('192.168.1.1')
